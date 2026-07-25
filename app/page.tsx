@@ -137,15 +137,15 @@ export default function Home() {
               <Download className="w-[18px] h-[18px] text-[#FF9E33]" strokeWidth={2.5} />
             </div>
             <span className="text-[#020817] font-medium text-[16px] tracking-tight">
-              MEDIA Downloader
+              VAN-X 313 . ALL IN
             </span>
           </div>
           <nav className="hidden sm:flex items-center gap-[24px]">
             <a href="#" className="text-[#1863DC] text-[14px] font-medium leading-[22px] py-[8px] px-[12px] border-b-2 border-[#FF9E33]">
-              Home
+              Beranda
             </a>
-            <a href="https://whatsapp.com/channel/0029Vb6ukqnHQbS4mKP0j80L" target="_blank" rel="noopener noreferrer" className="text-[#020817] text-[14px] font-medium leading-[22px] py-[8px] px-[12px] border-b-2 border-transparent hover:text-[#1863DC] hover:border-[#FF9E33] transition-colors">
-              Community
+            <a href="https://whatsapp.com/channel/0029Vb7PIC9KQuJRWvETIR2y" target="_blank" rel="noopener noreferrer" className="text-[#020817] text-[14px] font-medium leading-[22px] py-[8px] px-[12px] border-b-2 border-transparent hover:text-[#1863DC] hover:border-[#FF9E33] transition-colors">
+              Komunitas
             </a>
           </nav>
         </div>
@@ -163,7 +163,7 @@ export default function Home() {
             className="inline-flex items-center gap-[8px] bg-[#FFDBC4] text-[#38102A] px-[16px] py-[8px] rounded-[50px] mb-[24px] font-medium text-[12px] md:text-[14px]"
           >
             <Sparkles className="w-[16px] h-[16px] text-[#FF9E33]" />
-            <span>Fast, Secure, and Universal API Integration</span>
+            <span>Cepat, Aman, dan Integrasi API Universal</span>
           </motion.div>
           
           <motion.h1 
@@ -172,7 +172,7 @@ export default function Home() {
             transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
             className="text-[32px] md:text-[48px] font-medium leading-[1.2] text-[#020817] mb-[16px] max-w-4xl"
           >
-            Universal Media Downloader
+            Pengunduh Media Universal
           </motion.h1>
           
           <motion.p 
@@ -181,7 +181,7 @@ export default function Home() {
             transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
             className="text-[16px] md:text-[18px] font-normal leading-[1.5] text-[#212121] mb-[40px] max-w-2xl px-4"
           >
-            Retrieve videos and media from your favorite social platforms instantly. Built with a professional-grade architecture ensuring high availability and zero downtime.
+            Unduh video dan media dari platform sosial favoritmu secara instan. Dibangun dengan arsitektur profesional yang menjamin ketersediaan tinggi dan tanpa downtime.
           </motion.p>
           
           {/* Main Input Card (Card Light) */}
@@ -195,7 +195,7 @@ export default function Home() {
               <div className="flex-1 relative">
                 <input 
                   type="url" 
-                  placeholder="Paste URL here (e.g. https://vt.tiktok.com/...)" 
+                  placeholder="Tempel URL di sini (contoh: https://vt.tiktok.com/...)" 
                   className="w-full h-[44px] bg-[#FFFFFF] text-[#212121] text-[16px] font-normal px-[16px] rounded-[4px] border border-[#D0D5D2] placeholder:text-[#CCCCCC] focus:border-2 focus:border-[#1863DC] focus:ring-[4px] focus:ring-[rgba(24,99,220,0.1)] focus:outline-none transition-all"
                   value={url}
                   onChange={(e) => setUrl(e.target.value)}
@@ -212,11 +212,11 @@ export default function Home() {
               >
                 {loading ? (
                   <>
-                    <Loader2 className="w-[18px] h-[18px] animate-spin" /> Processing
+                    <Loader2 className="w-[18px] h-[18px] animate-spin" /> Memproses
                   </>
                 ) : (
                   <>
-                    <Download className="w-[18px] h-[18px]" /> Extract Media
+                    <Download className="w-[18px] h-[18px]" /> Unduh Media
                   </>
                 )}
               </motion.button>
@@ -255,11 +255,11 @@ export default function Home() {
               <div className="w-full max-w-3xl bg-[#FFFFFF] p-[24px] md:p-[32px] rounded-[9px] border border-[#E2E8F0] shadow-[0px_4px_12px_rgba(0,0,0,0.1)]">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-[24px] border-b border-[#EBEBEB] pb-[16px] gap-[12px]">
                   <div>
-                    <h3 className="text-[24px] md:text-[28px] font-medium leading-[1.2] text-[#000000]">Extraction Complete</h3>
-                    <p className="text-[#212121] text-[14px] mt-[4px]">Preview and download your requested media.</p>
+                    <h3 className="text-[24px] md:text-[28px] font-medium leading-[1.2] text-[#000000]">Ekstraksi Selesai</h3>
+                    <p className="text-[#212121] text-[14px] mt-[4px]">Pratinjau dan unduh media yang Anda minta.</p>
                   </div>
                   <div className="bg-[#008000] text-[#FFFFFF] text-[12px] font-medium px-[12px] py-[6px] rounded-[16px] flex items-center gap-[6px] shrink-0">
-                     <CheckCircle2 className="w-[14px] h-[14px]" /> Success
+                     <CheckCircle2 className="w-[14px] h-[14px]" /> Berhasil
                   </div>
                 </div>
 
@@ -281,7 +281,7 @@ export default function Home() {
                             <h4 className="text-[14px] font-medium text-[#020817] truncate" title={link.label}>
                               {link.label}
                             </h4>
-                            <p className="text-[12px] text-[#212121] opacity-70 truncate mt-[2px]">Ready to access</p>
+                            <p className="text-[12px] text-[#212121] opacity-70 truncate mt-[2px]">Siap diakses</p>
                           </div>
                         </div>
                         <a 
@@ -290,7 +290,7 @@ export default function Home() {
                           rel="noopener noreferrer"
                           className="w-full h-[40px] flex items-center justify-center gap-[8px] bg-transparent text-[#1863DC] border-[2px] border-[#1863DC] rounded-[2px] text-[14px] font-medium transition-colors hover:bg-[rgba(24,99,220,0.05)] active:bg-[rgba(24,99,220,0.1)]"
                         >
-                          <Download className="w-[16px] h-[16px]" /> Access Media
+                          <Download className="w-[16px] h-[16px]" /> Akses Media
                         </a>
                       </motion.div>
                     ))}
@@ -298,16 +298,16 @@ export default function Home() {
                 ) : (
                   <div className="py-[32px] text-center border border-[#EBEBEB] rounded-[6px] bg-[#F4F4F4] mb-[24px]">
                     <p className="text-[16px] font-normal leading-[25px] text-[#212121]">
-                      No extractable URLs were found in the response.
+                      Tidak ada URL yang dapat diekstrak dari respons.
                     </p>
                   </div>
                 )}
 
                 <details className="group border border-[#EBEBEB] rounded-[6px] overflow-hidden">
                   <summary className="bg-[#F4F4F4] text-[#020817] text-[14px] font-medium leading-[24px] p-[16px] hover:bg-[#E2E8F0] cursor-pointer transition-colors user-select-none outline-none flex items-center justify-between">
-                    <span>View Technical Payload</span>
-                    <span className="text-[12px] opacity-60 group-open:hidden">Expand</span>
-                    <span className="text-[12px] opacity-60 hidden group-open:block">Collapse</span>
+                    <span>Lihat Data Teknis</span>
+                    <span className="text-[12px] opacity-60 group-open:hidden">Buka</span>
+                    <span className="text-[12px] opacity-60 hidden group-open:block">Tutup</span>
                   </summary>
                   <div className="p-[16px] bg-[#FFFFFF] text-[12px] font-mono text-[#212121] whitespace-pre-wrap overflow-x-auto max-h-[400px] overflow-y-auto border-t border-[#EBEBEB]">
                     {JSON.stringify(result, null, 2)}
@@ -327,9 +327,9 @@ export default function Home() {
               <div className="w-[48px] h-[48px] bg-[#FFFFFF] rounded-[6px] flex items-center justify-center mb-[16px] shadow-sm">
                 <Globe className="w-[24px] h-[24px] text-[#FF9E33]" />
               </div>
-              <h3 className="text-[18px] font-medium leading-[24px] mb-[8px]">Global Reach</h3>
+              <h3 className="text-[18px] font-medium leading-[24px] mb-[8px]">Jangkauan Global</h3>
               <p className="text-[14px] font-normal leading-[21px] flex-1">
-                Servers optimized globally to fetch your content with ultra-low latency and unparalleled reliability.
+                Server dioptimalkan secara global untuk mengambil konten Anda dengan latensi ultra-rendah dan keandalan yang tak tertandingi.
               </p>
             </div>
           </div>
@@ -337,12 +337,12 @@ export default function Home() {
           <div className="md:col-span-2 bg-[#FFFFFF] p-[24px] md:p-[32px] rounded-[9px] border border-[#E2E8F0] shadow-[0px_4px_12px_rgba(0,0,0,0.1)]">
             <div className="flex items-center gap-[12px] mb-[16px] pb-[16px] border-b border-[#EBEBEB]">
               <Server className="w-[24px] h-[24px] text-[#1863DC]" />
-              <h3 className="text-[18px] font-medium leading-[24px] text-[#020817]">Supported Networks</h3>
+              <h3 className="text-[18px] font-medium leading-[24px] text-[#020817]">Platform yang Didukung</h3>
             </div>
             <p className="text-[14px] font-normal leading-[24px] text-[#212121]">
-               Our infrastructure seamlessly routes requests to support an expansive array of content networks including:<br/>
+               Infrastruktur kami dengan mulus merutekan permintaan untuk mendukung berbagai platform konten termasuk:<br/>
                <span className="font-medium mt-[8px] block opacity-80">
-                 Tiktok, Douyin, Capcut, Threads, Instagram, Facebook, Espn, Pinterest, imdb, imgur, ifunny, Izlesene, Reddit, Youtube, Twitter, Vimeo, Snapchat, Bilibili, Dailymotion, Sharechat, Likee, Linkedin, Tumblr, Telegram, Spotify, Soundcloud, and dozens more.
+                 TikTok, Douyin, CapCut, Threads, Instagram, Facebook, ESPN, Pinterest, IMDb, Imgur, iFunny, İzlesene, Reddit, YouTube, Twitter, Vimeo, Snapchat, Bilibili, Dailymotion, ShareChat, Likee, LinkedIn, Tumblr, Telegram, Spotify, SoundCloud, dan lusinan lainnya.
                </span>
             </p>
           </div>
@@ -360,23 +360,23 @@ export default function Home() {
                 <Download className="w-[14px] h-[14px] text-[#FF9E33]" strokeWidth={2.5} />
               </div>
               <p className="text-[16px] font-medium leading-[24px] text-[#020817] tracking-tight">
-                MEDIA Downloader
+                VAN-X 313 . ALL IN
               </p>
             </div>
             <p className="text-[14px] font-normal leading-[24px] text-[#212121] max-w-sm text-center md:text-left">
-              Enterprise-grade media extraction tooling. Reliable, fast, and universally accessible.
+              Alat ekstraksi media kelas enterprise. Andal, cepat, dan dapat diakses secara universal.
             </p>
           </div>
           
           <div className="flex flex-col items-center md:items-end md:text-right gap-[4px]">
             <p className="text-[14px] font-normal leading-[24px] text-[#212121]">
-              Developed & Maintained by <span className="font-medium text-[#020817]">SANN404 FORUM!!</span>
+              Dikembangkan & Dikelola oleh <span className="font-medium text-[#020817]">VAN-X 313 . ALL IN</span>
             </p>
             <p className="text-[12px] font-medium leading-[20px] text-[#1863DC] uppercase tracking-wider mb-[4px]">
-              SANN FORUM GROUP © {new Date().getFullYear()}
+              VAN-X 313 GROUP © {new Date().getFullYear()}
             </p>
-            <a href="https://whatsapp.com/channel/0029Vb6ukqnHQbS4mKP0j80L" target="_blank" rel="noopener noreferrer" className="text-[#1863DC] text-[14px] font-medium leading-[24px] hover:underline hover:underline-offset-4 flex items-center gap-[6px]">
-              Join the Community Channel
+            <a href="https://whatsapp.com/channel/0029Vb7PIC9KQuJRWvETIR2y" target="_blank" rel="noopener noreferrer" className="text-[#1863DC] text-[14px] font-medium leading-[24px] hover:underline hover:underline-offset-4 flex items-center gap-[6px]">
+              Bergabung dengan Channel Komunitas
             </a>
           </div>
           
@@ -413,26 +413,26 @@ export default function Home() {
                 <ShieldCheck className="w-[24px] h-[24px] text-[#FF9E33]" />
               </div>
 
-              <h3 className="text-[32px] font-medium leading-[1.2] mb-[12px] tracking-tight">Stay Connected</h3>
+              <h3 className="text-[32px] font-medium leading-[1.2] mb-[12px] tracking-tight">Tetap Terhubung</h3>
               <p className="text-[16px] font-normal leading-[25px] mb-[32px] text-[#FFFFFF]/80">
-                Join the SANN404 FORUM!! channel on WhatsApp to receive the latest updates, enterprise tools, and developer news.
+                Bergabunglah dengan channel VAN-X 313 . ALL IN di WhatsApp untuk menerima pembaruan terbaru, tools enterprise, dan berita developer.
               </p>
               
               <div className="flex flex-col gap-[16px]">
                 <a 
-                  href="https://whatsapp.com/channel/0029Vb6ukqnHQbS4mKP0j80L" 
+                  href="https://whatsapp.com/channel/0029Vb7PIC9KQuJRWvETIR2y" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   onClick={() => setShowPopup(false)}
                   className="h-[44px] w-full bg-[#FF9E33] text-[#FFFFFF] text-[14px] font-medium px-[24px] rounded-[2px] border-[2px] border-[#FF9E33] hover:bg-[#FFB700] hover:border-[#FFB700] active:bg-[#E8A025] active:border-[#E8A025] transition-colors flex items-center justify-center"
                 >
-                  Join Official Channel
+                  Gabung Channel Resmi
                 </a>
                 <button 
                   onClick={() => setShowPopup(false)}
                   className="h-[44px] w-full bg-transparent text-[#FF9E33] text-[14px] font-medium px-[24px] rounded-[2px] border-[2px] border-[#FF9E33] hover:bg-[rgba(255,158,51,0.1)] hover:text-[#FFB700] hover:border-[#FFB700] active:bg-[rgba(255,158,51,0.2)] active:text-[#E8A025] active:border-[#E8A025] transition-colors flex items-center justify-center"
                 >
-                  Continue to Application
+                  Lanjut ke Aplikasi
                 </button>
               </div>
             </motion.div>
@@ -455,20 +455,20 @@ export default function Home() {
                 <Download className="w-[20px] h-[20px] text-[#FF9E33]" />
               </div>
               <div className="flex-1">
-                <h4 className="text-[14px] font-medium leading-[20px]">Install MEDIA Downloader</h4>
-                <p className="text-[12px] text-[#212121] mt-[2px]">Add to Home Screen for faster access.</p>
+                <h4 className="text-[14px] font-medium leading-[20px]">Instal VAN-X 313 . ALL IN</h4>
+                <p className="text-[12px] text-[#212121] mt-[2px]">Tambahkan ke Layar Utama untuk akses lebih cepat.</p>
                 <div className="flex items-center gap-[8px] mt-[12px]">
                   <button 
                     onClick={handleInstallClick}
                     className="bg-[#FF9E33] text-[#FFFFFF] text-[12px] font-medium px-[16px] py-[6px] rounded-[2px] border-2 border-[#FF9E33] hover:bg-[#FFB700] hover:border-[#FFB700] transition-colors"
                   >
-                    Install App
+                    Instal Aplikasi
                   </button>
                   <button 
                     onClick={() => setShowInstallPopup(false)}
                     className="bg-transparent text-[#212121] text-[12px] font-medium px-[16px] py-[6px] rounded-[2px] border border-[#D0D5D2] hover:bg-[#F4F4F4] transition-colors"
                   >
-                    Later
+                    Nanti
                   </button>
                 </div>
               </div>
