@@ -1,28 +1,32 @@
 import type {Metadata, Viewport} from 'next';
-import { Inter } from 'next/font/google';
+import { Space_Grotesk } from 'next/font/google';
 import './globals.css';
 
-const inter = Inter({ subsets: ['latin'] });
+const spaceGrotesk = Space_Grotesk({ 
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-space-grotesk'
+});
 
 export const metadata: Metadata = {
-  title: 'MEDIA Downloader',
-  description: 'Download videos and media from multiple platforms quickly.',
+  title: 'VAN-X 313 . ALL IN - Pengunduh Media Universal',
+  description: 'Unduh video dan media dari Instagram, TikTok, Facebook, CapCut, dan Spotify dengan mudah dan cepat.',
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "MEDIA Downloader"
+    title: "VAN-X 313 . ALL IN"
   }
 };
 
 export const viewport: Viewport = {
-  themeColor: '#E2E8F0',
+  themeColor: '#0F172A',
 };
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
-    <html lang="en">
-      <body className={`${inter.className} bg-[#E2E8F0] font-sans text-[#020817] min-h-screen antialiased`} suppressHydrationWarning>{children}</body>
+    <html lang="id">
+      <body className={`${spaceGrotesk.variable} font-sans bg-[#F8FAFC] text-[#0F172A] min-h-screen antialiased`} suppressHydrationWarning>{children}</body>
     </html>
   );
 }
