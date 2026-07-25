@@ -109,6 +109,19 @@ function isSpotifySearch(url: string): boolean {
   return !url.startsWith("http") && url.length < 200;
 }
 
+function cleanSpotifyUrl(url: string): string {
+  // Clean Spotify URL - remove query parameters and fragments
+  // Example: https://open.spotify.com/track/7rwScNq2fq2taw6S3tgXA0?si=DYrEPClNQEac-yO_qC8Pcw&utm_source=copy-link
+  // Becomes: https://open.spotify.com/track/7rwScNq2fq2taw6S3tgXA0
+  try {
+    const urlObj = new URL(url);
+    // Return clean URL without query params and hash
+    return `${urlObj.protocol}//${urlObj.host}${urlObj.pathname}`;
+  } catch {
+    return url;
+  }
+}
+
 function isValidUrl(str: string): boolean {
   try {
     const urlObj = new URL(str);
@@ -207,6 +220,16 @@ async function fetchFromCapCut(url: string) {
 
 async function fetchFromSpotify(query: string) {
   try {
+    // Check if input is a Spotify URL
+    if (query.startsWith("http") && query.includes("spotify.com")) {
+      // Nexadev Spotify API does not support URLs, only text search
+      return {
+        success: false,
+        endpoint: API_ENDPOINTS.spotify.name,
+        error: "Spotify API hanya support pencarian teks. Silakan masukkan nama lagu (contoh: 'karna kamu'), bukan URL Spotify. Atau coba fitur download Spotify di platform lain."
+      };
+    }
+    
     const response = await apiClient.get(API_ENDPOINTS.spotify.url, {
       params: { q: query },
     });
@@ -329,9 +352,8 @@ async function fetchFromAPIs(url: string) {
 
   // Spotify
   if (platform === "spotify") {
-    // Extract track name or use URL
-    const query = url.includes("open.spotify") ? url : url;
-    return await fetchFromSpotify(query);
+    // Pass URL directly, fetchFromSpotify will clean it
+    return await fetchFromSpotify(url);
   }
 
   // Unknown platform
