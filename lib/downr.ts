@@ -1,18 +1,26 @@
 import axios from "axios";
 
-// API configuration - Multiple endpoints for fallback
-const API_ENDPOINTS = [
-  {
-    name: "Nexadev API",
+// API configuration - Multiple endpoints for different platforms
+const API_ENDPOINTS = {
+  aio: {
+    name: "Nexadev AIO",
     url: "https://api.nexadev.my.id/api/aio",
-    type: "GET"
+    type: "GET",
+    platforms: ["tiktok", "twitter", "facebook", "youtube"]
   },
-  {
+  instagram: {
+    name: "Nexadev Instagram",
+    url: "https://api.nexadev.my.id/api/ig",
+    type: "GET",
+    platforms: ["instagram"]
+  },
+  tikwm: {
     name: "Tikwm API",
     url: "https://www.tikwm.com/api/",
-    type: "POST"
+    type: "POST",
+    platforms: ["tiktok"]
   }
-];
+};
 
 const DEMO_MODE = process.env.DEMO_MODE === "true";
 
@@ -64,6 +72,18 @@ function getMockResponse(url: string) {
   };
 }
 
+function detectPlatform(url: string): string {
+  const urlLower = url.toLowerCase();
+  
+  if (urlLower.includes("instagram.com")) return "instagram";
+  if (urlLower.includes("tiktok.com") || urlLower.includes("vt.tiktok")) return "tiktok";
+  if (urlLower.includes("twitter.com") || urlLower.includes("x.com")) return "twitter";
+  if (urlLower.includes("facebook.com") || urlLower.includes("fb.watch")) return "facebook";
+  if (urlLower.includes("youtube.com") || urlLower.includes("youtu.be")) return "youtube";
+  
+  return "unknown";
+}
+
 function isValidUrl(str: string): boolean {
   try {
     const urlObj = new URL(str);
@@ -73,30 +93,59 @@ function isValidUrl(str: string): boolean {
   }
 }
 
-async function fetchFromNexadev(url: string) {
+async function fetchFromInstagram(url: string) {
   try {
-    const response = await apiClient.get(API_ENDPOINTS[0].url, {
+    const response = await apiClient.get(API_ENDPOINTS.instagram.url, {
       params: { url },
     });
 
     if (response.data && response.data.status) {
       return {
         success: true,
-        endpoint: API_ENDPOINTS[0].name,
+        endpoint: API_ENDPOINTS.instagram.name,
         data: transformNexadevResponse(response.data),
       };
     }
 
     return {
       success: false,
-      endpoint: API_ENDPOINTS[0].name,
+      endpoint: API_ENDPOINTS.instagram.name,
+      error: response.data?.message || "Failed to fetch Instagram media",
+    };
+  } catch (error: any) {
+    console.error("Instagram API Error:", error.message);
+    return {
+      success: false,
+      endpoint: API_ENDPOINTS.instagram.name,
+      error: error.message || "Network error",
+    };
+  }
+}
+
+async function fetchFromNexadev(url: string) {
+  try {
+    const response = await apiClient.get(API_ENDPOINTS.aio.url, {
+      params: { url },
+    });
+
+    if (response.data && response.data.status) {
+      return {
+        success: true,
+        endpoint: API_ENDPOINTS.aio.name,
+        data: transformNexadevResponse(response.data),
+      };
+    }
+
+    return {
+      success: false,
+      endpoint: API_ENDPOINTS.aio.name,
       error: response.data?.message || "Failed to fetch media",
     };
   } catch (error: any) {
-    console.error("Nexadev API Error:", error.message);
+    console.error("Nexadev AIO API Error:", error.message);
     return {
       success: false,
-      endpoint: API_ENDPOINTS[0].name,
+      endpoint: API_ENDPOINTS.aio.name,
       error: error.message || "Network error",
     };
   }
@@ -105,7 +154,7 @@ async function fetchFromNexadev(url: string) {
 async function fetchFromTikwm(url: string) {
   try {
     const response = await apiClient.post(
-      API_ENDPOINTS[1].url,
+      API_ENDPOINTS.tikwm.url,
       `url=${encodeURIComponent(url)}`,
       {
         headers: {
@@ -117,33 +166,56 @@ async function fetchFromTikwm(url: string) {
     if (response.data && response.data.code === 0 && response.data.data) {
       return {
         success: true,
-        endpoint: API_ENDPOINTS[1].name,
+        endpoint: API_ENDPOINTS.tikwm.name,
         data: transformTikwmResponse(response.data.data),
       };
     }
 
     return {
       success: false,
-      endpoint: API_ENDPOINTS[1].name,
+      endpoint: API_ENDPOINTS.tikwm.name,
       error: response.data?.msg || "Failed to fetch media",
     };
   } catch (error: any) {
     console.error("Tikwm API Error:", error.message);
     return {
       success: false,
-      endpoint: API_ENDPOINTS[1].name,
+      endpoint: API_ENDPOINTS.tikwm.name,
       error: error.message || "Network error",
     };
   }
 }
 
 async function fetchFromAPIs(url: string) {
-  // Try Nexadev first
-  let result = await fetchFromNexadev(url);
-  if (result.success) return result;
+  const platform = detectPlatform(url);
+  console.log(`Detected platform: ${platform}`);
 
-  // Fallback to Tikwm
-  result = await fetchFromTikwm(url);
+  // Instagram - use dedicated Instagram API
+  if (platform === "instagram") {
+    const result = await fetchFromInstagram(url);
+    if (result.success) return result;
+    
+    // Try AIO as fallback
+    const aioResult = await fetchFromNexadev(url);
+    if (aioResult.success) return aioResult;
+    
+    return result; // Return original error
+  }
+
+  // TikTok - try AIO first, then Tikwm
+  if (platform === "tiktok") {
+    const result = await fetchFromNexadev(url);
+    if (result.success) return result;
+    
+    // Fallback to Tikwm
+    const tikwmResult = await fetchFromTikwm(url);
+    if (tikwmResult.success) return tikwmResult;
+    
+    return result;
+  }
+
+  // Other platforms - use AIO
+  const result = await fetchFromNexadev(url);
   return result;
 }
 
