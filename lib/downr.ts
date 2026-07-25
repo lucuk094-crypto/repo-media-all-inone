@@ -2,10 +2,11 @@ import axios from "axios";
 import https from "https";
 import http from "http";
 
-const BASE = "https://downr.org";
-const ANALYTICS = `${BASE}/.netlify/functions/analytics`;
-const DOWNLOAD = `${BASE}/.netlify/functions/download`;
-const NYT = `${BASE}/.netlify/functions/nyt`;
+// Using alternative API endpoints
+const API_ENDPOINTS = [
+  "https://api.cobalt.tools/api/json",
+  "https://co.wuk.sh/api/json"
+];
 
 // 1. Connection pooling for high concurrency
 const httpAgent = new http.Agent({ keepAlive: true, maxSockets: 200, maxFreeSockets: 50, timeout: 60000 });
@@ -62,6 +63,32 @@ function parseData(data: any) {
   }
 }
 
+function transformCobaltResponse(data: any) {
+  // Transform Cobalt API response to our format
+  if (!data) return null;
+  
+  if (data.status === "redirect" || data.status === "stream") {
+    return {
+      url: data.url,
+      filename: data.filename || "media",
+      type: "video"
+    };
+  }
+  
+  if (data.status === "picker") {
+    // Multiple media items (e.g., carousel posts)
+    return {
+      picker: data.picker.map((item: any) => ({
+        url: item.url,
+        thumb: item.thumb,
+        type: item.type || "image"
+      }))
+    };
+  }
+  
+  return data;
+}
+
 function isOk(status: number, data: any) {
   const isObject = data && typeof data === "object";
   if (status < 200 || status >= 300) return false;
@@ -72,7 +99,13 @@ function isOk(status: number, data: any) {
   if (data === "user_retry_required") return false;
   if (isObject && data.error === true) return false;
   if (isObject && data.status === false) return false;
+  if (isObject && data.status === "error") return false;
+  if (isObject && data.status === "rate-limit") return false;
   if (isObject && data.success === false) return false;
+  // Cobalt API success check
+  if (isObject && data.status === "redirect") return true;
+  if (isObject && data.status === "stream") return true;
+  if (isObject && data.status === "picker") return true;
   return true;
 }
 
@@ -82,75 +115,55 @@ function getError(data: any, status: number) {
   return `HTTP ${status}`;
 }
 
-const getHeaders = (cookie = "") => {
+const getHeaders = () => {
   return {
-    accept: "*/*",
-    "accept-encoding": "gzip, deflate, br",
-    "accept-language": "en-US,en;q=0.9",
+    "accept": "application/json",
     "content-type": "application/json",
-    cookie,
-    origin: BASE,
-    referer: `${BASE}/`,
-    "sec-ch-ua": '"Chromium";v="130", "Not?A_Brand";v="99"',
-    "sec-ch-ua-mobile": "?1",
-    "sec-ch-ua-platform": '"Android"',
-    "sec-fetch-dest": "empty",
-    "sec-fetch-mode": "cors",
-    "sec-fetch-site": "same-origin",
     "user-agent": getRandomUA()
   };
 };
 
-async function getCookie(retries = 2) {
-  for (let i = 0; i < retries; i++) {
-    try {
-      const res = await apiClient.get(ANALYTICS, {
-        timeout: 10000,
-        headers: getHeaders()
-      });
-      return parseCookie((res.headers as any)["set-cookie"] || []);
-    } catch (e) {
-      if (i === retries - 1) return "";
-    }
-  }
-  return "";
-}
-
-async function postEndpoint(endpoint: string, url: string, cookie = "") {
+async function postEndpoint(endpoint: string, url: string) {
   try {
-    const res = await apiClient.post(endpoint, { url }, {
+    const payload = {
+      url: url,
+      vCodec: "h264",
+      vQuality: "720",
+      aFormat: "mp3",
+      filenamePattern: "classic",
+      isAudioOnly: false,
+      disableMetadata: false
+    };
+
+    const res = await apiClient.post(endpoint, payload, {
       timeout: 30000,
       validateStatus: () => true,
-      responseType: "text",
-      transformResponse: [v => v],
-      headers: getHeaders(cookie)
+      headers: getHeaders()
     });
+
     return {
       endpoint,
       status: res.status,
-      data: parseData(res.data)
+      data: res.data
     };
   } catch (err: any) {
     return {
       endpoint,
       status: err.response?.status || 500,
-      data: null
+      data: err.response?.data || null
     };
   }
 }
 
 async function tryDownload(url: string) {
-  let cookie = await getCookie();
-  let result = await postEndpoint(DOWNLOAD, url, cookie);
-
+  // Try first API endpoint
+  let result = await postEndpoint(API_ENDPOINTS[0], url);
+  
   if (isOk(result.status, result.data)) return result;
 
-  cookie = await getCookie();
-  result = await postEndpoint(DOWNLOAD, url, cookie);
-
-  if (isOk(result.status, result.data)) return result;
-
-  result = await postEndpoint(NYT, url, cookie);
+  // Try second API endpoint as fallback
+  result = await postEndpoint(API_ENDPOINTS[1], url);
+  
   return result;
 }
 
@@ -183,12 +196,14 @@ export async function downr(url: string) {
       const result = await tryDownload(url);
       const ok = isOk(result.status, result.data);
 
+      const transformedData = ok ? transformCobaltResponse(result.data) : null;
+
       const finalOutput = {
         Status: ok,
         Code: result.status,
         Input: url,
         Endpoint: result.endpoint,
-        Result: ok ? result.data : null,
+        Result: transformedData,
         Error: ok ? null : getError(result.data, result.status)
       };
 
