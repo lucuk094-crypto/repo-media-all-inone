@@ -1,21 +1,40 @@
 # Media Downloader - API Information
 
-## Problem Fixed
+## Latest Update: Platform-Specific APIs
 
-Previously, the application was using `downr.org` API which returned `action_forbidden` error when deployed to Vercel.
+The application now uses **dedicated APIs** for each platform to ensure maximum compatibility and success rate.
 
-## Solution
+## API Endpoints
 
-Switched to **Cobalt Tools API** - a more reliable and open-source media downloader API.
+### 1. Instagram API (Dedicated)
+- **URL:** `https://api.nexadev.my.id/api/ig`
+- **Method:** GET
+- **Platforms:** Instagram (Reels, Posts, Stories, IGTV)
+- **Priority:** Primary for Instagram URLs
 
-## API Endpoints Used
+### 2. All-in-One API (Universal)
+- **URL:** `https://api.nexadev.my.id/api/aio`
+- **Method:** GET
+- **Platforms:** TikTok, Twitter, Facebook, YouTube, and more
+- **Priority:** Primary for non-Instagram platforms
 
-1. **Primary:** `https://api.cobalt.tools/api/json`
-2. **Fallback:** `https://co.wuk.sh/api/json`
+### 3. Tikwm API (TikTok Fallback)
+- **URL:** `https://www.tikwm.com/api/`
+- **Method:** POST
+- **Platforms:** TikTok only
+- **Priority:** Fallback if AIO fails for TikTok
+
+## Smart Platform Detection
+
+The app automatically detects the platform and uses the best API:
+
+```
+Instagram URL → Instagram API → (fallback: AIO)
+TikTok URL → AIO API → (fallback: Tikwm)
+Other URLs → AIO API
+```
 
 ## Supported Platforms
-
-The Cobalt API supports downloading from:
 
 - **TikTok** (videos, images, audio)
 - **YouTube** (videos, music)
