@@ -2,17 +2,35 @@ import axios from "axios";
 
 // API configuration - Multiple endpoints for different platforms
 const API_ENDPOINTS = {
-  aio: {
-    name: "Nexadev AIO",
-    url: "https://api.nexadev.my.id/api/aio",
-    type: "GET",
-    platforms: ["tiktok", "twitter", "facebook", "youtube"]
-  },
   instagram: {
     name: "Nexadev Instagram",
     url: "https://api.nexadev.my.id/api/ig",
     type: "GET",
     platforms: ["instagram"]
+  },
+  tiktok: {
+    name: "Nexadev SnapTik",
+    url: "https://api.nexadev.my.id/api/snaptik/",
+    type: "GET",
+    platforms: ["tiktok"]
+  },
+  facebook: {
+    name: "Nexadev Facebook",
+    url: "https://api.nexadev.my.id/api/fb",
+    type: "GET",
+    platforms: ["facebook"]
+  },
+  capcut: {
+    name: "Nexadev CapCut",
+    url: "https://api.nexadev.my.id/api/capcut",
+    type: "GET",
+    platforms: ["capcut"]
+  },
+  spotify: {
+    name: "Nexadev Spotify",
+    url: "https://api.nexadev.my.id/api/spotifyplay",
+    type: "GET",
+    platforms: ["spotify"]
   },
   tikwm: {
     name: "Tikwm API",
@@ -77,11 +95,18 @@ function detectPlatform(url: string): string {
   
   if (urlLower.includes("instagram.com")) return "instagram";
   if (urlLower.includes("tiktok.com") || urlLower.includes("vt.tiktok")) return "tiktok";
+  if (urlLower.includes("facebook.com") || urlLower.includes("fb.watch") || urlLower.includes("fb.com")) return "facebook";
+  if (urlLower.includes("capcut.com")) return "capcut";
+  if (urlLower.includes("spotify.com") || urlLower.includes("open.spotify")) return "spotify";
   if (urlLower.includes("twitter.com") || urlLower.includes("x.com")) return "twitter";
-  if (urlLower.includes("facebook.com") || urlLower.includes("fb.watch")) return "facebook";
   if (urlLower.includes("youtube.com") || urlLower.includes("youtu.be")) return "youtube";
   
   return "unknown";
+}
+
+function isSpotifySearch(url: string): boolean {
+  // Check if it's a Spotify search query (not a URL)
+  return !url.startsWith("http") && url.length < 200;
 }
 
 function isValidUrl(str: string): boolean {
@@ -90,6 +115,122 @@ function isValidUrl(str: string): boolean {
     return urlObj.protocol === "http:" || urlObj.protocol === "https:";
   } catch {
     return false;
+  }
+}
+
+async function fetchFromTikTok(url: string) {
+  try {
+    const response = await apiClient.get(API_ENDPOINTS.tiktok.url, {
+      params: { url },
+    });
+
+    if (response.data && response.data.status) {
+      return {
+        success: true,
+        endpoint: API_ENDPOINTS.tiktok.name,
+        data: transformNexadevResponse(response.data),
+      };
+    }
+
+    return {
+      success: false,
+      endpoint: API_ENDPOINTS.tiktok.name,
+      error: response.data?.message || "Failed to fetch TikTok media",
+    };
+  } catch (error: any) {
+    console.error("TikTok API Error:", error.message);
+    return {
+      success: false,
+      endpoint: API_ENDPOINTS.tiktok.name,
+      error: error.message || "Network error",
+    };
+  }
+}
+
+async function fetchFromFacebook(url: string) {
+  try {
+    const response = await apiClient.get(API_ENDPOINTS.facebook.url, {
+      params: { url },
+    });
+
+    if (response.data && response.data.status) {
+      return {
+        success: true,
+        endpoint: API_ENDPOINTS.facebook.name,
+        data: transformNexadevResponse(response.data),
+      };
+    }
+
+    return {
+      success: false,
+      endpoint: API_ENDPOINTS.facebook.name,
+      error: response.data?.message || "Failed to fetch Facebook media",
+    };
+  } catch (error: any) {
+    console.error("Facebook API Error:", error.message);
+    return {
+      success: false,
+      endpoint: API_ENDPOINTS.facebook.name,
+      error: error.message || "Network error",
+    };
+  }
+}
+
+async function fetchFromCapCut(url: string) {
+  try {
+    const response = await apiClient.get(API_ENDPOINTS.capcut.url, {
+      params: { url },
+    });
+
+    if (response.data && response.data.status) {
+      return {
+        success: true,
+        endpoint: API_ENDPOINTS.capcut.name,
+        data: transformNexadevResponse(response.data),
+      };
+    }
+
+    return {
+      success: false,
+      endpoint: API_ENDPOINTS.capcut.name,
+      error: response.data?.message || "Failed to fetch CapCut media",
+    };
+  } catch (error: any) {
+    console.error("CapCut API Error:", error.message);
+    return {
+      success: false,
+      endpoint: API_ENDPOINTS.capcut.name,
+      error: error.message || "Network error",
+    };
+  }
+}
+
+async function fetchFromSpotify(query: string) {
+  try {
+    const response = await apiClient.get(API_ENDPOINTS.spotify.url, {
+      params: { q: query },
+    });
+
+    if (response.data && response.data.status) {
+      return {
+        success: true,
+        endpoint: API_ENDPOINTS.spotify.name,
+        data: transformSpotifyResponse(response.data),
+      };
+    }
+
+    return {
+      success: false,
+      endpoint: API_ENDPOINTS.spotify.name,
+      error: response.data?.message || "Failed to fetch Spotify media",
+    };
+  } catch (error: any) {
+    console.error("Spotify API Error:", error.message);
+    return {
+      success: false,
+      endpoint: API_ENDPOINTS.spotify.name,
+      error: error.message || "Network error",
+    };
   }
 }
 
@@ -117,35 +258,6 @@ async function fetchFromInstagram(url: string) {
     return {
       success: false,
       endpoint: API_ENDPOINTS.instagram.name,
-      error: error.message || "Network error",
-    };
-  }
-}
-
-async function fetchFromNexadev(url: string) {
-  try {
-    const response = await apiClient.get(API_ENDPOINTS.aio.url, {
-      params: { url },
-    });
-
-    if (response.data && response.data.status) {
-      return {
-        success: true,
-        endpoint: API_ENDPOINTS.aio.name,
-        data: transformNexadevResponse(response.data),
-      };
-    }
-
-    return {
-      success: false,
-      endpoint: API_ENDPOINTS.aio.name,
-      error: response.data?.message || "Failed to fetch media",
-    };
-  } catch (error: any) {
-    console.error("Nexadev AIO API Error:", error.message);
-    return {
-      success: false,
-      endpoint: API_ENDPOINTS.aio.name,
       error: error.message || "Network error",
     };
   }
@@ -190,33 +302,84 @@ async function fetchFromAPIs(url: string) {
   const platform = detectPlatform(url);
   console.log(`Detected platform: ${platform}`);
 
-  // Instagram - use dedicated Instagram API
+  // Instagram
   if (platform === "instagram") {
-    const result = await fetchFromInstagram(url);
-    if (result.success) return result;
-    
-    // Try AIO as fallback
-    const aioResult = await fetchFromNexadev(url);
-    if (aioResult.success) return aioResult;
-    
-    return result; // Return original error
+    return await fetchFromInstagram(url);
   }
 
-  // TikTok - try AIO first, then Tikwm
+  // TikTok
   if (platform === "tiktok") {
-    const result = await fetchFromNexadev(url);
+    const result = await fetchFromTikTok(url);
     if (result.success) return result;
     
     // Fallback to Tikwm
     const tikwmResult = await fetchFromTikwm(url);
-    if (tikwmResult.success) return tikwmResult;
-    
-    return result;
+    return tikwmResult;
   }
 
-  // Other platforms - use AIO
-  const result = await fetchFromNexadev(url);
-  return result;
+  // Facebook
+  if (platform === "facebook") {
+    return await fetchFromFacebook(url);
+  }
+
+  // CapCut
+  if (platform === "capcut") {
+    return await fetchFromCapCut(url);
+  }
+
+  // Spotify
+  if (platform === "spotify") {
+    // Extract track name or use URL
+    const query = url.includes("open.spotify") ? url : url;
+    return await fetchFromSpotify(query);
+  }
+
+  // Unknown platform
+  return {
+    success: false,
+    endpoint: "Unknown",
+    error: "Platform not supported. Supported: Instagram, TikTok, Facebook, CapCut, Spotify"
+  };
+}
+
+function transformSpotifyResponse(data: any) {
+  if (!data || !data.data) return data;
+
+  const spotifyData = data.data;
+
+  // Handle Spotify response
+  if (spotifyData.preview || spotifyData.download) {
+    return {
+      audio_url: spotifyData.download || spotifyData.preview,
+      preview_url: spotifyData.preview,
+      title: spotifyData.title || spotifyData.name,
+      artist: spotifyData.artist || spotifyData.artists,
+      album: spotifyData.album,
+      cover: spotifyData.cover || spotifyData.image,
+      duration: spotifyData.duration,
+      type: "audio",
+      source: "spotify"
+    };
+  }
+
+  // Handle search results
+  if (Array.isArray(spotifyData.tracks) || Array.isArray(spotifyData)) {
+    const tracks = spotifyData.tracks || spotifyData;
+    return {
+      type: "search_results",
+      tracks: tracks.slice(0, 5).map((track: any) => ({
+        title: track.title || track.name,
+        artist: track.artist || track.artists,
+        preview_url: track.preview,
+        download_url: track.download,
+        cover: track.cover || track.image,
+        duration: track.duration
+      })),
+      source: "spotify"
+    };
+  }
+
+  return spotifyData;
 }
 
 function transformNexadevResponse(data: any) {
@@ -317,7 +480,32 @@ function transformTikwmResponse(data: any) {
 
 export async function downr(url: string) {
   try {
-    // Validate URL
+    // Check if it's a Spotify search query
+    if (isSpotifySearch(url)) {
+      const result = await fetchFromSpotify(url);
+      
+      if (result.success) {
+        return {
+          Status: true,
+          Code: 200,
+          Input: url,
+          Endpoint: result.endpoint,
+          Result: result.data,
+          Error: null,
+        };
+      } else {
+        return {
+          Status: false,
+          Code: 500,
+          Input: url,
+          Endpoint: result.endpoint,
+          Result: null,
+          Error: result.error || "Failed to search Spotify",
+        };
+      }
+    }
+
+    // Validate URL for non-Spotify searches
     if (!url || !isValidUrl(url)) {
       return {
         Status: false,
@@ -325,7 +513,7 @@ export async function downr(url: string) {
         Input: url || null,
         Endpoint: null,
         Result: null,
-        Error: "Invalid URL format. Please provide a valid HTTP/HTTPS URL.",
+        Error: "Invalid URL format. Please provide a valid HTTP/HTTPS URL or Spotify search query.",
       };
     }
 
