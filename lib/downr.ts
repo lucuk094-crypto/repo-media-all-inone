@@ -1,45 +1,38 @@
 import axios from "axios";
-import https from "https";
-import http from "http";
 
-// Using alternative API endpoints
+// API configuration - Multiple endpoints for fallback
 const API_ENDPOINTS = [
-  "https://api.cobalt.tools/api/json",
-  "https://co.wuk.sh/api/json"
+  {
+    name: "Nexadev API",
+    url: "https://api.nexadev.my.id/api/aio",
+    type: "GET"
+  },
+  {
+    name: "Tikwm API",
+    url: "https://www.tikwm.com/api/",
+    type: "POST"
+  }
 ];
 
-// 1. Connection pooling for high concurrency
-const httpAgent = new http.Agent({ keepAlive: true, maxSockets: 200, maxFreeSockets: 50, timeout: 60000 });
-const httpsAgent = new https.Agent({ keepAlive: true, maxSockets: 200, maxFreeSockets: 50, timeout: 60000 });
+const DEMO_MODE = process.env.DEMO_MODE === "true";
 
+// Create axios instance with timeout
 const apiClient = axios.create({
-  httpAgent,
-  httpsAgent,
+  timeout: 30000,
+  headers: {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+  },
 });
 
-// 2. User-Agent Rotation
-const UAs = [
-  "Mozilla/5.0 (Linux; Android 15; SM-F958 Build/AP3A.240905.015) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.86 Mobile Safari/537.36",
-  "Mozilla/5.0 (Linux; Android 14; SM-S928B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Mobile Safari/537.36",
-  "Mozilla/5.0 (iPhone; CPU iPhone OS 17_5_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1",
-  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
-  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
-  "Mozilla/5.0 (Linux; Android 13; Pixel 7 Pro) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Mobile Safari/537.36"
-];
-
-function getRandomUA() {
-  return UAs[Math.floor(Math.random() * UAs.length)];
-}
-
-// 3. In-memory caching for redundant URL requests
+// Cache configuration
 interface CacheEntry {
   data: any;
   expiresAt: number;
 }
 const cache = new Map<string, CacheEntry>();
-const CACHE_TTL_MS = 1000 * 60 * 10; // 10 minutes cache per URL to survive viral storms
+const CACHE_TTL_MS = 1000 * 60 * 10; // 10 minutes
 
-// Cleanup old cache entries periodically
+// Cleanup old cache entries
 setInterval(() => {
   const now = Date.now();
   for (const [key, value] of cache.entries()) {
@@ -47,137 +40,224 @@ setInterval(() => {
       cache.delete(key);
     }
   }
-}, 1000 * 60 * 5); // every 5 minutes
+}, 1000 * 60 * 5);
 
-function parseCookie(setCookie: string[] = []) {
-  return setCookie.map(v => v.split(";")[0]).join("; ");
-}
+// Pending requests map to prevent duplicate requests
+const pendingRequests = new Map<string, Promise<any>>();
 
-function parseData(data: any) {
-  if (typeof data !== "string") return data;
-  const text = data.trim();
-  try {
-    return JSON.parse(text);
-  } catch {
-    return text;
-  }
-}
-
-function transformCobaltResponse(data: any) {
-  // Transform Cobalt API response to our format
-  if (!data) return null;
-  
-  if (data.status === "redirect" || data.status === "stream") {
-    return {
-      url: data.url,
-      filename: data.filename || "media",
-      type: "video"
-    };
-  }
-  
-  if (data.status === "picker") {
-    // Multiple media items (e.g., carousel posts)
-    return {
-      picker: data.picker.map((item: any) => ({
-        url: item.url,
-        thumb: item.thumb,
-        type: item.type || "image"
-      }))
-    };
-  }
-  
-  return data;
-}
-
-function isOk(status: number, data: any) {
-  const isObject = data && typeof data === "object";
-  if (status < 200 || status >= 300) return false;
-  if (data === null || data === undefined) return false;
-  if (data === "") return false;
-  if (data === "error") return false;
-  if (data === "failed") return false;
-  if (data === "user_retry_required") return false;
-  if (isObject && data.error === true) return false;
-  if (isObject && data.status === false) return false;
-  if (isObject && data.status === "error") return false;
-  if (isObject && data.status === "rate-limit") return false;
-  if (isObject && data.success === false) return false;
-  // Cobalt API success check
-  if (isObject && data.status === "redirect") return true;
-  if (isObject && data.status === "stream") return true;
-  if (isObject && data.status === "picker") return true;
-  return true;
-}
-
-function getError(data: any, status: number) {
-  if (typeof data === "string") return data || `HTTP ${status}`;
-  if (data && typeof data === "object") return data.message || data.error || data.status || data.reason || `HTTP ${status}`;
-  return `HTTP ${status}`;
-}
-
-const getHeaders = () => {
+function getMockResponse(url: string) {
+  // Mock response for testing
   return {
-    "accept": "application/json",
-    "content-type": "application/json",
-    "user-agent": getRandomUA()
+    Status: true,
+    Code: 200,
+    Input: url,
+    Endpoint: "DEMO_MODE",
+    Result: {
+      video_url: "https://sample-videos.com/video321/mp4/720/big_buck_bunny_720p_1mb.mp4",
+      cover: "https://picsum.photos/400/600",
+      title: "Sample Video - Demo Mode",
+      author: "Demo User",
+      type: "video",
+      message: "This is demo mode. Real downloads will work after deployment."
+    },
+    Error: null
   };
-};
+}
 
-async function postEndpoint(endpoint: string, url: string) {
+function isValidUrl(str: string): boolean {
   try {
-    const payload = {
-      url: url,
-      vCodec: "h264",
-      vQuality: "720",
-      aFormat: "mp3",
-      filenamePattern: "classic",
-      isAudioOnly: false,
-      disableMetadata: false
-    };
+    const urlObj = new URL(str);
+    return urlObj.protocol === "http:" || urlObj.protocol === "https:";
+  } catch {
+    return false;
+  }
+}
 
-    const res = await apiClient.post(endpoint, payload, {
-      timeout: 30000,
-      validateStatus: () => true,
-      headers: getHeaders()
+async function fetchFromNexadev(url: string) {
+  try {
+    const response = await apiClient.get(API_ENDPOINTS[0].url, {
+      params: { url },
     });
 
+    if (response.data && response.data.status) {
+      return {
+        success: true,
+        endpoint: API_ENDPOINTS[0].name,
+        data: transformNexadevResponse(response.data),
+      };
+    }
+
     return {
-      endpoint,
-      status: res.status,
-      data: res.data
+      success: false,
+      endpoint: API_ENDPOINTS[0].name,
+      error: response.data?.message || "Failed to fetch media",
     };
-  } catch (err: any) {
+  } catch (error: any) {
+    console.error("Nexadev API Error:", error.message);
     return {
-      endpoint,
-      status: err.response?.status || 500,
-      data: err.response?.data || null
+      success: false,
+      endpoint: API_ENDPOINTS[0].name,
+      error: error.message || "Network error",
     };
   }
 }
 
-async function tryDownload(url: string) {
-  // Try first API endpoint
-  let result = await postEndpoint(API_ENDPOINTS[0], url);
-  
-  if (isOk(result.status, result.data)) return result;
+async function fetchFromTikwm(url: string) {
+  try {
+    const response = await apiClient.post(
+      API_ENDPOINTS[1].url,
+      `url=${encodeURIComponent(url)}`,
+      {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+        },
+      }
+    );
 
-  // Try second API endpoint as fallback
-  result = await postEndpoint(API_ENDPOINTS[1], url);
-  
+    if (response.data && response.data.code === 0 && response.data.data) {
+      return {
+        success: true,
+        endpoint: API_ENDPOINTS[1].name,
+        data: transformTikwmResponse(response.data.data),
+      };
+    }
+
+    return {
+      success: false,
+      endpoint: API_ENDPOINTS[1].name,
+      error: response.data?.msg || "Failed to fetch media",
+    };
+  } catch (error: any) {
+    console.error("Tikwm API Error:", error.message);
+    return {
+      success: false,
+      endpoint: API_ENDPOINTS[1].name,
+      error: error.message || "Network error",
+    };
+  }
+}
+
+async function fetchFromAPIs(url: string) {
+  // Try Nexadev first
+  let result = await fetchFromNexadev(url);
+  if (result.success) return result;
+
+  // Fallback to Tikwm
+  result = await fetchFromTikwm(url);
   return result;
 }
 
-// 4. Global promise maps so we don't fetch the exact same URL concurrently
-// This prevents overwhelming the server if many people ask for the same video simultaneously
-const pendingRequests = new Map<string, Promise<any>>();
+function transformNexadevResponse(data: any) {
+  if (!data || !data.data) return data;
+
+  const mediaData = data.data;
+
+  // Handle video response
+  if (mediaData.medias && Array.isArray(mediaData.medias)) {
+    const videos = mediaData.medias.filter((m: any) => m.quality);
+    const images = mediaData.medias.filter((m: any) => m.url && !m.quality);
+
+    if (videos.length > 0) {
+      return {
+        video_url: videos[0].url,
+        video_hd: videos.find((v: any) => v.quality === "hd")?.url || videos[0].url,
+        video_sd: videos.find((v: any) => v.quality === "sd")?.url,
+        thumbnail: mediaData.thumbnail || videos[0].thumbnail,
+        title: mediaData.title,
+        duration: mediaData.duration,
+        type: "video",
+        source: "nexadev"
+      };
+    }
+
+    if (images.length > 0) {
+      return {
+        images: images.map((img: any) => img.url),
+        thumbnail: mediaData.thumbnail,
+        title: mediaData.title,
+        type: "images",
+        source: "nexadev"
+      };
+    }
+  }
+
+  // Direct media object
+  if (mediaData.url) {
+    return {
+      video_url: mediaData.url,
+      thumbnail: mediaData.thumbnail,
+      title: mediaData.title,
+      type: "video",
+      source: "nexadev"
+    };
+  }
+
+  return mediaData;
+}
+
+function transformTikwmResponse(data: any) {
+  if (!data) return null;
+
+  // Video response
+  if (data.play) {
+    return {
+      video_url: data.play,
+      video_hd: data.hdplay || data.play,
+      music_url: data.music,
+      cover: data.cover,
+      origin_cover: data.origin_cover,
+      title: data.title,
+      author: {
+        nickname: data.author?.nickname,
+        unique_id: data.author?.unique_id,
+        avatar: data.author?.avatar,
+      },
+      duration: data.duration,
+      play_count: data.play_count,
+      like_count: data.digg_count,
+      comment_count: data.comment_count,
+      share_count: data.share_count,
+      download_count: data.download_count,
+      type: "video",
+    };
+  }
+
+  // Images response (carousel/slideshow)
+  if (data.images && Array.isArray(data.images)) {
+    return {
+      images: data.images,
+      music_url: data.music,
+      title: data.title,
+      author: {
+        nickname: data.author?.nickname,
+        unique_id: data.author?.unique_id,
+        avatar: data.author?.avatar,
+      },
+      play_count: data.play_count,
+      like_count: data.digg_count,
+      comment_count: data.comment_count,
+      type: "images",
+    };
+  }
+
+  return data;
+}
 
 export async function downr(url: string) {
   try {
-    if (!url || !/^https?:\/\//i.test(url)) {
-      throw new Error("Invalid url.");
+    // Validate URL
+    if (!url || !isValidUrl(url)) {
+      return {
+        Status: false,
+        Code: 400,
+        Input: url || null,
+        Endpoint: null,
+        Result: null,
+        Error: "Invalid URL format. Please provide a valid HTTP/HTTPS URL.",
+      };
     }
 
-    // Checking Cache First
+    // Check cache first
     if (cache.has(url)) {
       const cached = cache.get(url)!;
       if (Date.now() < cached.expiresAt) {
@@ -187,50 +267,63 @@ export async function downr(url: string) {
       }
     }
 
-    // Coalesce duplicate pending requests (Dog-pile prevention)
+    // Return demo response if in demo mode
+    if (DEMO_MODE) {
+      return getMockResponse(url);
+    }
+
+    // Coalesce duplicate pending requests
     if (pendingRequests.has(url)) {
       return await pendingRequests.get(url);
     }
 
     const requestPromise = (async () => {
-      const result = await tryDownload(url);
-      const ok = isOk(result.status, result.data);
+      const result = await fetchFromAPIs(url);
 
-      const transformedData = ok ? transformCobaltResponse(result.data) : null;
+      if (result.success) {
+        const finalOutput = {
+          Status: true,
+          Code: 200,
+          Input: url,
+          Endpoint: result.endpoint,
+          Result: result.data,
+          Error: null,
+        };
 
-      const finalOutput = {
-        Status: ok,
-        Code: result.status,
-        Input: url,
-        Endpoint: result.endpoint,
-        Result: transformedData,
-        Error: ok ? null : getError(result.data, result.status)
-      };
+        // Save to cache
+        cache.set(url, {
+          data: finalOutput,
+          expiresAt: Date.now() + CACHE_TTL_MS,
+        });
 
-      if (ok) {
-         // Save to cache on success
-         cache.set(url, {
-           data: finalOutput,
-           expiresAt: Date.now() + CACHE_TTL_MS
-         });
+        return finalOutput;
+      } else {
+        return {
+          Status: false,
+          Code: 500,
+          Input: url,
+          Endpoint: result.endpoint,
+          Result: null,
+          Error: result.error || "Failed to download media. Please try again or use a different URL.",
+        };
       }
-
-      return finalOutput;
     })();
 
     pendingRequests.set(url, requestPromise);
     const data = await requestPromise;
     pendingRequests.delete(url);
+
     return data;
   } catch (err: any) {
     pendingRequests.delete(url);
+    console.error("Download Error:", err);
     return {
       Status: false,
       Code: err.response?.status || 500,
       Input: url || null,
       Endpoint: null,
       Result: null,
-      Error: err.message
+      Error: err.message || "An unexpected error occurred",
     };
   }
 }
