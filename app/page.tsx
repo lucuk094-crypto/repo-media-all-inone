@@ -164,13 +164,18 @@ export default function Home() {
           <nav className="flex items-center gap-[8px]">
             <button
               onClick={toggleDarkMode}
-              className="glass-strong p-[10px] rounded-xl hover:bg-stone-100/80 dark:hover:bg-stone-800/80 transition-all btn-3d"
+              className="glass-strong p-[10px] rounded-xl hover:bg-stone-100/80 dark:hover:bg-stone-800/80 transition-all btn-3d group"
               aria-label="Toggle Dark Mode"
             >
               {darkMode ? (
-                <Sun className="w-[20px] h-[20px] text-stone-900 dark:text-stone-50" strokeWidth={2} />
+                <svg className="w-[20px] h-[20px] text-stone-900 dark:text-stone-50 transition-transform group-hover:rotate-45" strokeWidth="1.5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <circle cx="12" cy="12" r="4"/>
+                  <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+                </svg>
               ) : (
-                <Moon className="w-[20px] h-[20px] text-stone-900 dark:text-stone-50" strokeWidth={2} />
+                <svg className="w-[20px] h-[20px] text-stone-900 dark:text-stone-50 transition-transform group-hover:-rotate-12" strokeWidth="1.5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                </svg>
               )}
             </button>
             <a href="#" className="hidden sm:block text-stone-900 dark:text-stone-50 text-[15px] font-medium px-[20px] py-[10px] rounded-xl glass-strong hover:bg-stone-100/80 dark:hover:bg-stone-800/80 transition-all">
