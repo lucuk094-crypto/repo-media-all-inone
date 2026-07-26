@@ -128,23 +128,23 @@ export default function Home() {
   const links = result ? gatherLinks(result) : [];
 
   return (
-    <div className="flex flex-col min-h-screen w-full bg-gradient-to-br from-slate-50 via-white to-slate-50">
-      {/* Sticky Navigation Menu Bar */}
-      <header className="h-[70px] sticky top-0 z-40 bg-white/70 backdrop-blur-xl border-b border-slate-200/60 flex items-center px-4 md:px-[32px] shadow-sm">
+    <div className="flex flex-col min-h-screen w-full">
+      {/* Glassmorphism Navigation Bar */}
+      <header className="h-[70px] sticky top-0 z-40 glass border-b border-stone-200/60 flex items-center px-4 md:px-[32px]">
         <div className="w-full max-w-[1400px] mx-auto flex items-center justify-between">
           <div className="flex items-center gap-[14px]">
-            <div className="w-[44px] h-[44px] bg-gradient-to-br from-slate-900 to-slate-700 rounded-xl flex items-center justify-center shadow-lg shadow-slate-900/20">
-              <Download className="w-[22px] h-[22px] text-white" strokeWidth={2.5} />
+            <div className="w-[44px] h-[44px] bg-stone-900 rounded-xl flex items-center justify-center">
+              <Download className="w-[22px] h-[22px] text-stone-50" strokeWidth={2} />
             </div>
-            <span className="text-slate-900 font-bold text-[19px] tracking-tight">
+            <span className="text-stone-900 font-semibold text-[19px] tracking-tight">
               VAN-X 313
             </span>
           </div>
           <nav className="hidden sm:flex items-center gap-[8px]">
-            <a href="#" className="text-slate-900 text-[15px] font-semibold px-[20px] py-[10px] rounded-xl bg-slate-100 hover:bg-slate-200 transition-all">
+            <a href="#" className="text-stone-900 text-[15px] font-medium px-[20px] py-[10px] rounded-xl glass-strong hover:bg-stone-100/80 transition-all">
               Beranda
             </a>
-            <a href="https://whatsapp.com/channel/0029Vb7PIC9KQuJRWvETIR2y" target="_blank" rel="noopener noreferrer" className="text-slate-600 text-[15px] font-medium px-[20px] py-[10px] rounded-xl hover:bg-slate-100 hover:text-slate-900 transition-all">
+            <a href="https://whatsapp.com/channel/0029Vb7PIC9KQuJRWvETIR2y" target="_blank" rel="noopener noreferrer" className="text-stone-600 text-[15px] font-medium px-[20px] py-[10px] rounded-xl hover:glass-strong hover:text-stone-900 transition-all">
               Komunitas
             </a>
           </nav>
@@ -160,9 +160,9 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
-            className="inline-flex items-center gap-[10px] bg-gradient-to-r from-slate-100 to-slate-50 text-slate-700 px-[20px] py-[10px] rounded-full mb-[32px] font-medium text-[13px] md:text-[14px] border border-slate-200 shadow-sm"
+            className="inline-flex items-center gap-[10px] glass-card text-stone-700 px-[20px] py-[10px] rounded-full mb-[32px] font-medium text-[13px] md:text-[14px]"
           >
-            <Sparkles className="w-[16px] h-[16px] text-slate-600" />
+            <Sparkles className="w-[16px] h-[16px] text-stone-600" />
             <span>Cepat, Aman, dan Integrasi API Universal</span>
           </motion.div>
           
@@ -170,7 +170,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
-            className="text-[42px] md:text-[64px] font-bold leading-[1.1] text-slate-900 mb-[20px] max-w-4xl tracking-tight"
+            className="text-[42px] md:text-[64px] font-semibold leading-[1.1] text-stone-900 mb-[20px] max-w-4xl tracking-tight"
           >
             Pengunduh Media<br/>Universal
           </motion.h1>
@@ -179,24 +179,24 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
-            className="text-[17px] md:text-[19px] font-normal leading-[1.6] text-slate-600 mb-[48px] max-w-2xl px-4"
+            className="text-[17px] md:text-[19px] font-normal leading-[1.6] text-stone-600 mb-[48px] max-w-2xl px-4"
           >
             Unduh video dan media dari platform sosial favoritmu secara instan. Dibangun dengan arsitektur profesional yang menjamin ketersediaan tinggi dan tanpa downtime.
           </motion.p>
           
-          {/* Main Input Card (Card Light) */}
+          {/* Glassmorphism Input Card */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }}
-            className="w-full max-w-3xl bg-white/90 backdrop-blur-sm p-[32px] rounded-2xl border border-slate-200 shadow-xl shadow-slate-200/50 relative z-10"
+            className="w-full max-w-3xl glass-card p-[32px] rounded-2xl relative z-10"
           >
             <form onSubmit={handleDownload} className="flex flex-col md:flex-row gap-[16px]">
               <div className="flex-1 relative">
                 <input 
                   type="url" 
                   placeholder="Tempel URL di sini (contoh: https://vt.tiktok.com/...)" 
-                  className="w-full h-[52px] bg-slate-50 text-slate-900 text-[16px] font-medium px-[20px] rounded-xl border-2 border-slate-200 placeholder:text-slate-400 focus:border-slate-900 focus:ring-4 focus:ring-slate-900/10 focus:outline-none focus:bg-white transition-all"
+                  className="w-full h-[52px] glass-strong text-stone-900 text-[16px] font-normal px-[20px] rounded-xl border border-stone-200/60 placeholder:text-stone-400 focus:border-stone-900 focus:ring-4 focus:ring-stone-900/10 focus:outline-none transition-all"
                   value={url}
                   onChange={(e) => setUrl(e.target.value)}
                   disabled={loading}
@@ -208,7 +208,7 @@ export default function Home() {
                 whileTap={{ scale: (url && !loading) ? 0.98 : 1 }}
                 type="submit" 
                 disabled={loading || !url}
-                className="h-[52px] shrink-0 bg-gradient-to-r from-slate-900 to-slate-700 text-white text-[15px] font-semibold px-[32px] rounded-xl hover:from-slate-800 hover:to-slate-600 active:scale-95 disabled:from-slate-300 disabled:to-slate-300 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-[10px] shadow-lg shadow-slate-900/20"
+                className="h-[52px] shrink-0 bg-stone-900 text-stone-50 text-[15px] font-medium px-[32px] rounded-xl hover:bg-stone-800 active:scale-95 disabled:bg-stone-300 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-[10px]"
               >
                 {loading ? (
                   <>
@@ -231,7 +231,7 @@ export default function Home() {
                   exit={{ opacity: 0, height: 0, marginTop: 0 }}
                   className="overflow-hidden"
                 >
-                  <div className="flex items-center gap-[10px] bg-red-50 text-red-700 text-[14px] font-medium px-[16px] py-[12px] rounded-xl border border-red-200">
+                  <div className="flex items-center gap-[10px] bg-red-50/90 text-red-700 text-[14px] font-medium px-[16px] py-[12px] rounded-xl border border-red-200/60 backdrop-blur-sm">
                     <AlertCircle className="w-[18px] h-[18px] flex-shrink-0" />
                     <span>{error}</span>
                   </div>
@@ -241,7 +241,7 @@ export default function Home() {
           </motion.div>
         </section>
 
-        {/* Results Section */}
+        {/* Results Section with Glassmorphism */}
         <AnimatePresence mode="wait">
           {result && (
             <motion.section 
@@ -252,13 +252,13 @@ export default function Home() {
               transition={{ duration: 0.4 }}
               className="flex flex-col items-center w-full"
             >
-              <div className="w-full max-w-3xl bg-white/90 backdrop-blur-sm p-[32px] md:p-[40px] rounded-2xl border border-slate-200 shadow-xl shadow-slate-200/50">
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-[28px] border-b border-slate-200 pb-[20px] gap-[16px]">
+              <div className="w-full max-w-3xl glass-card p-[32px] md:p-[40px] rounded-2xl">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-[28px] border-b border-stone-200/60 pb-[20px] gap-[16px]">
                   <div>
-                    <h3 className="text-[28px] md:text-[32px] font-bold leading-tight text-slate-900">Ekstraksi Selesai</h3>
-                    <p className="text-slate-600 text-[15px] mt-[6px]">Pratinjau dan unduh media yang Anda minta.</p>
+                    <h3 className="text-[28px] md:text-[32px] font-semibold leading-tight text-stone-900">Ekstraksi Selesai</h3>
+                    <p className="text-stone-600 text-[15px] mt-[6px]">Pratinjau dan unduh media yang Anda minta.</p>
                   </div>
-                  <div className="bg-emerald-50 text-emerald-700 text-[13px] font-semibold px-[16px] py-[8px] rounded-full flex items-center gap-[8px] shrink-0 border border-emerald-200">
+                  <div className="bg-emerald-50/90 text-emerald-700 text-[13px] font-medium px-[16px] py-[8px] rounded-full flex items-center gap-[8px] shrink-0 border border-emerald-200/60 backdrop-blur-sm">
                      <CheckCircle2 className="w-[16px] h-[16px]" /> Berhasil
                   </div>
                 </div>
@@ -271,24 +271,24 @@ export default function Home() {
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.3, delay: idx * 0.05 }}
                         key={idx} 
-                        className="flex flex-col justify-between p-[24px] border-2 border-slate-200 rounded-xl bg-gradient-to-br from-white to-slate-50 hover:border-slate-300 hover:shadow-lg transition-all group"
+                        className="flex flex-col justify-between p-[24px] border border-stone-200/60 rounded-xl glass-strong hover:border-stone-300 transition-all group"
                       >
                         <div className="flex items-start gap-[14px] mb-[20px]">
-                          <div className="w-[44px] h-[44px] bg-gradient-to-br from-slate-900 to-slate-700 rounded-xl flex items-center justify-center shrink-0 shadow-md">
-                            <LinkIcon className="w-[22px] h-[22px] text-white" />
+                          <div className="w-[44px] h-[44px] bg-stone-900 rounded-xl flex items-center justify-center shrink-0">
+                            <LinkIcon className="w-[22px] h-[22px] text-stone-50" strokeWidth={2} />
                           </div>
                           <div className="flex-1 overflow-hidden">
-                            <h4 className="text-[15px] font-semibold text-slate-900 truncate" title={link.label}>
+                            <h4 className="text-[15px] font-medium text-stone-900 truncate" title={link.label}>
                               {link.label}
                             </h4>
-                            <p className="text-[13px] text-slate-500 truncate mt-[4px]">Siap diakses</p>
+                            <p className="text-[13px] text-stone-500 truncate mt-[4px]">Siap diakses</p>
                           </div>
                         </div>
                         <a 
                           href={link.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="w-full h-[46px] flex items-center justify-center gap-[10px] bg-gradient-to-r from-slate-900 to-slate-700 text-white rounded-xl text-[14px] font-semibold transition-all hover:from-slate-800 hover:to-slate-600 active:scale-95 shadow-lg shadow-slate-900/20"
+                          className="w-full h-[46px] flex items-center justify-center gap-[10px] bg-stone-900 text-stone-50 rounded-xl text-[14px] font-medium transition-all hover:bg-stone-800 active:scale-95"
                         >
                           <Download className="w-[18px] h-[18px]" /> Akses Media
                         </a>
@@ -296,20 +296,20 @@ export default function Home() {
                     ))}
                   </div>
                 ) : (
-                  <div className="py-[40px] text-center border-2 border-dashed border-slate-200 rounded-xl bg-slate-50 mb-[28px]">
-                    <p className="text-[16px] font-normal leading-relaxed text-slate-600">
+                  <div className="py-[40px] text-center border border-dashed border-stone-200/60 rounded-xl glass-strong mb-[28px]">
+                    <p className="text-[16px] font-normal leading-relaxed text-stone-600">
                       Tidak ada URL yang dapat diekstrak dari respons.
                     </p>
                   </div>
                 )}
 
-                <details className="group border-2 border-slate-200 rounded-xl overflow-hidden hover:border-slate-300 transition-colors">
-                  <summary className="bg-slate-50 text-slate-900 text-[14px] font-semibold p-[18px] hover:bg-slate-100 cursor-pointer transition-colors user-select-none outline-none flex items-center justify-between">
+                <details className="group border border-stone-200/60 rounded-xl overflow-hidden hover:border-stone-300 transition-colors glass-strong">
+                  <summary className="glass text-stone-900 text-[14px] font-medium p-[18px] hover:glass-strong cursor-pointer transition-colors user-select-none outline-none flex items-center justify-between">
                     <span>Lihat Data Teknis</span>
-                    <span className="text-[13px] text-slate-500 group-open:hidden">Buka</span>
-                    <span className="text-[13px] text-slate-500 hidden group-open:block">Tutup</span>
+                    <span className="text-[13px] text-stone-500 group-open:hidden">Buka</span>
+                    <span className="text-[13px] text-stone-500 hidden group-open:block">Tutup</span>
                   </summary>
-                  <div className="p-[20px] bg-white text-[12px] font-mono text-slate-700 whitespace-pre-wrap overflow-x-auto max-h-[400px] overflow-y-auto border-t-2 border-slate-200">
+                  <div className="p-[20px] glass-strong text-[12px] font-mono text-stone-700 whitespace-pre-wrap overflow-x-auto max-h-[400px] overflow-y-auto border-t border-stone-200/60">
                     {JSON.stringify(result, null, 2)}
                   </div>
                 </details>
@@ -319,53 +319,73 @@ export default function Home() {
           )}
         </AnimatePresence>
 
-        {/* Info Grid (Features & Supported Platforms) */}
+        {/* Info Grid with Glassmorphism */}
         <section className="w-full max-w-5xl mx-auto mt-[24px] md:mt-[48px] grid grid-cols-1 md:grid-cols-3 gap-[24px]">
-          {/* Card Default (Warm) */}
+          {/* Dark Feature Card */}
           <div className="md:col-span-1 flex flex-col gap-[24px]">
-            <div className="bg-gradient-to-br from-slate-900 to-slate-700 p-[32px] rounded-2xl text-white h-full shadow-xl shadow-slate-900/20 flex flex-col items-start">
-              <div className="w-[52px] h-[52px] bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center mb-[20px] shadow-lg">
-                <Globe className="w-[26px] h-[26px] text-white" />
+            <div className="bg-stone-900 p-[32px] rounded-2xl text-stone-50 h-full flex flex-col items-start">
+              <div className="w-[52px] h-[52px] glass-strong rounded-xl flex items-center justify-center mb-[20px]">
+                <Globe className="w-[26px] h-[26px] text-stone-900" strokeWidth={1.5} />
               </div>
-              <h3 className="text-[20px] font-bold leading-tight mb-[10px]">Jangkauan Global</h3>
-              <p className="text-[15px] font-normal leading-relaxed flex-1 text-white/80">
+              <h3 className="text-[20px] font-semibold leading-tight mb-[10px]">Jangkauan Global</h3>
+              <p className="text-[15px] font-normal leading-relaxed flex-1 text-stone-200">
                 Server dioptimalkan secara global untuk mengambil konten Anda dengan latensi ultra-rendah dan keandalan yang tak tertandingi.
               </p>
             </div>
           </div>
           
-          <div className="md:col-span-2 bg-white/80 backdrop-blur-sm p-[32px] rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md transition-all">
-            <div className="flex items-center gap-[12px] mb-[20px] pb-[20px] border-b border-slate-200">
-              <Server className="w-[22px] h-[22px] text-slate-700" />
-              <h3 className="text-[20px] font-semibold leading-tight text-slate-900">Platform yang Didukung</h3>
+          {/* Platform Cards with Line Icons */}
+          <div className="md:col-span-2 glass-card p-[32px] rounded-2xl transition-all">
+            <div className="flex items-center gap-[12px] mb-[20px] pb-[20px] border-b border-stone-200/60">
+              <Server className="w-[22px] h-[22px] text-stone-700" strokeWidth={1.5} />
+              <h3 className="text-[20px] font-medium leading-tight text-stone-900">Platform yang Didukung</h3>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-              <div className="flex items-center gap-2 p-3 bg-gradient-to-br from-pink-50 to-purple-50 rounded-lg border border-pink-100">
-                <div className="w-8 h-8 bg-gradient-to-br from-pink-500 to-purple-600 rounded-lg flex items-center justify-center text-white text-xs font-bold">IG</div>
-                <span className="text-sm font-medium text-slate-700">Instagram</span>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+              {/* Instagram */}
+              <div className="flex items-center gap-3 p-4 glass-strong rounded-xl border border-stone-200/60 hover:border-stone-300 transition-all group">
+                <svg className="w-7 h-7 text-stone-700 group-hover:text-stone-900 transition-colors" strokeWidth="1.5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                </svg>
+                <span className="text-sm font-medium text-stone-700">Instagram</span>
               </div>
-              <div className="flex items-center gap-2 p-3 bg-gradient-to-br from-slate-50 to-slate-100 rounded-lg border border-slate-200">
-                <div className="w-8 h-8 bg-gradient-to-br from-slate-700 to-slate-900 rounded-lg flex items-center justify-center text-white text-xs font-bold">TT</div>
-                <span className="text-sm font-medium text-slate-700">TikTok</span>
+              
+              {/* TikTok */}
+              <div className="flex items-center gap-3 p-4 glass-strong rounded-xl border border-stone-200/60 hover:border-stone-300 transition-all group">
+                <svg className="w-7 h-7 text-stone-700 group-hover:text-stone-900 transition-colors" strokeWidth="1.5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/>
+                </svg>
+                <span className="text-sm font-medium text-stone-700">TikTok</span>
               </div>
-              <div className="flex items-center gap-2 p-3 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg border border-blue-100">
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center text-white text-xs font-bold">FB</div>
-                <span className="text-sm font-medium text-slate-700">Facebook</span>
+              
+              {/* Facebook */}
+              <div className="flex items-center gap-3 p-4 glass-strong rounded-xl border border-stone-200/60 hover:border-stone-300 transition-all group">
+                <svg className="w-7 h-7 text-stone-700 group-hover:text-stone-900 transition-colors" strokeWidth="1.5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+                </svg>
+                <span className="text-sm font-medium text-stone-700">Facebook</span>
               </div>
-              <div className="flex items-center gap-2 p-3 bg-gradient-to-br from-amber-50 to-orange-50 rounded-lg border border-amber-100">
-                <div className="w-8 h-8 bg-gradient-to-br from-amber-500 to-orange-600 rounded-lg flex items-center justify-center text-white text-xs font-bold">CC</div>
-                <span className="text-sm font-medium text-slate-700">CapCut</span>
+              
+              {/* CapCut */}
+              <div className="flex items-center gap-3 p-4 glass-strong rounded-xl border border-stone-200/60 hover:border-stone-300 transition-all group">
+                <svg className="w-7 h-7 text-stone-700 group-hover:text-stone-900 transition-colors" strokeWidth="1.5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <rect x="3" y="3" width="18" height="18" rx="2"/>
+                  <path d="M7 10h5M12 15h5M7 15h2"/>
+                </svg>
+                <span className="text-sm font-medium text-stone-700">CapCut</span>
               </div>
-              <div className="flex items-center gap-2 p-3 bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg border border-green-100">
-                <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg flex items-center justify-center text-white text-xs font-bold">SP</div>
-                <span className="text-sm font-medium text-slate-700">Spotify</span>
-              </div>
-              <div className="flex items-center gap-2 p-3 bg-gradient-to-br from-violet-50 to-purple-50 rounded-lg border border-violet-100">
-                <div className="w-8 h-8 bg-gradient-to-br from-violet-500 to-purple-600 rounded-lg flex items-center justify-center text-white text-xs font-bold">+5</div>
-                <span className="text-sm font-medium text-slate-700">Lainnya</span>
+              
+              {/* Spotify */}
+              <div className="flex items-center gap-3 p-4 glass-strong rounded-xl border border-stone-200/60 hover:border-stone-300 transition-all group">
+                <svg className="w-7 h-7 text-stone-700 group-hover:text-stone-900 transition-colors" strokeWidth="1.5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M8 14.5c2.5-1 5.5-1 8 0M7.5 11c3-1 6.5-1 9 0M7 17.5c2.5-1 5.5-1 8 0"/>
+                </svg>
+                <span className="text-sm font-medium text-stone-700">Spotify</span>
               </div>
             </div>
-            <p className="text-xs text-slate-500 mt-4 leading-relaxed">
+            <p className="text-xs text-stone-500 mt-4 leading-relaxed">
               Mendukung download video, gambar, dan audio dari berbagai platform sosial media populer dengan kualitas terbaik.
             </p>
           </div>
@@ -373,34 +393,34 @@ export default function Home() {
 
       </main>
 
-      {/* Footer */}
-      <footer className="w-full border-t border-slate-200 py-[48px] bg-white px-4 mt-auto">
+      {/* Glassmorphism Footer */}
+      <footer className="w-full border-t border-stone-200/60 py-[48px] glass px-4 mt-auto">
         <div className="max-w-[1200px] mx-auto flex flex-col md:flex-row items-center justify-between gap-[32px]">
           
           <div className="flex flex-col items-center md:items-start gap-[12px]">
             <div className="flex items-center gap-[14px]">
-              <div className="w-[36px] h-[36px] bg-gradient-to-br from-slate-900 to-slate-700 rounded-xl flex items-center justify-center shadow-lg">
-                <Download className="w-[18px] h-[18px] text-white" strokeWidth={2.5} />
+              <div className="w-[36px] h-[36px] bg-stone-900 rounded-xl flex items-center justify-center">
+                <Download className="w-[18px] h-[18px] text-stone-50" strokeWidth={2} />
               </div>
-              <p className="text-[18px] font-bold leading-tight text-slate-900 tracking-tight">
+              <p className="text-[18px] font-semibold leading-tight text-stone-900 tracking-tight">
                 VAN-X 313
               </p>
             </div>
-            <p className="text-[14px] font-normal leading-relaxed text-slate-600 max-w-sm text-center md:text-left">
+            <p className="text-[14px] font-normal leading-relaxed text-stone-600 max-w-sm text-center md:text-left">
               Alat ekstraksi media kelas enterprise. Andal, cepat, dan dapat diakses secara universal.
             </p>
           </div>
           
           <div className="flex flex-col items-center md:items-end md:text-right gap-[8px]">
-            <p className="text-[14px] font-normal leading-relaxed text-slate-600">
-              Dikembangkan & Dikelola oleh <span className="font-semibold text-slate-900">VAN-X 313 . ALL IN</span>
+            <p className="text-[14px] font-normal leading-relaxed text-stone-600">
+              Dikembangkan & Dikelola oleh <span className="font-medium text-stone-900">VAN-X 313 . ALL IN</span>
             </p>
-            <p className="text-[13px] font-semibold leading-tight text-slate-500 uppercase tracking-wider mb-[6px]">
+            <p className="text-[13px] font-medium leading-tight text-stone-500 uppercase tracking-wider mb-[6px]">
               VAN-X 313 GROUP © {new Date().getFullYear()}
             </p>
-            <a href="https://whatsapp.com/channel/0029Vb7PIC9KQuJRWvETIR2y" target="_blank" rel="noopener noreferrer" className="text-slate-900 text-[14px] font-semibold leading-relaxed hover:text-slate-700 transition-colors flex items-center gap-[8px] group">
+            <a href="https://whatsapp.com/channel/0029Vb7PIC9KQuJRWvETIR2y" target="_blank" rel="noopener noreferrer" className="text-stone-900 text-[14px] font-medium leading-relaxed hover:text-stone-700 transition-colors flex items-center gap-[8px] group">
               <span className="group-hover:underline underline-offset-4">Bergabung dengan Channel Komunitas</span>
-              <span className="text-slate-400 group-hover:translate-x-1 transition-transform">→</span>
+              <span className="text-stone-400 group-hover:translate-x-1 transition-transform">→</span>
             </a>
           </div>
           
@@ -423,22 +443,22 @@ export default function Home() {
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.95, opacity: 0, y: 10 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="bg-gradient-to-br from-slate-900 to-slate-800 text-white w-full max-w-[460px] p-[40px] rounded-2xl shadow-2xl relative border border-slate-700/50"
+              className="bg-stone-900 text-stone-50 w-full max-w-[460px] p-[40px] rounded-2xl shadow-2xl relative"
             >
               <button 
                 onClick={() => setShowPopup(false)}
-                className="absolute top-[24px] right-[24px] text-white/50 hover:text-white transition-colors p-[6px] rounded-lg hover:bg-white/10"
+                className="absolute top-[24px] right-[24px] text-stone-400 hover:text-stone-50 transition-colors p-[6px] rounded-lg hover:bg-stone-800"
                 aria-label="Close"
               >
                 <X className="w-[24px] h-[24px]" />
               </button>
               
-              <div className="w-[56px] h-[56px] bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center mb-[28px] shadow-lg">
-                <ShieldCheck className="w-[28px] h-[28px] text-white" />
+              <div className="w-[56px] h-[56px] glass-strong rounded-xl flex items-center justify-center mb-[28px]">
+                <ShieldCheck className="w-[28px] h-[28px] text-stone-900" strokeWidth={1.5} />
               </div>
 
-              <h3 className="text-[36px] font-bold leading-tight mb-[16px] tracking-tight">Tetap Terhubung</h3>
-              <p className="text-[17px] font-normal leading-relaxed mb-[36px] text-white/70">
+              <h3 className="text-[36px] font-semibold leading-tight mb-[16px] tracking-tight">Tetap Terhubung</h3>
+              <p className="text-[17px] font-normal leading-relaxed mb-[36px] text-stone-200">
                 Bergabunglah dengan channel VAN-X 313 . ALL IN di WhatsApp untuk menerima pembaruan terbaru, tools enterprise, dan berita developer.
               </p>
               
@@ -448,13 +468,13 @@ export default function Home() {
                   target="_blank" 
                   rel="noopener noreferrer"
                   onClick={() => setShowPopup(false)}
-                  className="h-[52px] w-full bg-white text-slate-900 text-[15px] font-bold px-[28px] rounded-xl hover:bg-slate-50 active:scale-95 transition-all flex items-center justify-center shadow-xl"
+                  className="h-[52px] w-full glass-strong text-stone-900 text-[15px] font-medium px-[28px] rounded-xl hover:bg-stone-100 active:scale-95 transition-all flex items-center justify-center"
                 >
                   Gabung Channel Resmi
                 </a>
                 <button 
                   onClick={() => setShowPopup(false)}
-                  className="h-[52px] w-full bg-transparent text-white text-[15px] font-semibold px-[28px] rounded-xl border-2 border-white/30 hover:bg-white/10 hover:border-white/50 active:scale-95 transition-all flex items-center justify-center"
+                  className="h-[52px] w-full bg-transparent text-stone-50 text-[15px] font-medium px-[28px] rounded-xl border border-stone-700 hover:bg-stone-800 hover:border-stone-600 active:scale-95 transition-all flex items-center justify-center"
                 >
                   Lanjut ke Aplikasi
                 </button>
@@ -474,23 +494,23 @@ export default function Home() {
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
             className="fixed top-4 left-0 right-0 z-[100] flex justify-center px-4"
           >
-            <div className="bg-white text-slate-900 shadow-2xl rounded-2xl border-2 border-slate-200 p-[20px] max-w-md w-full flex items-start gap-[16px]">
-              <div className="w-[48px] h-[48px] bg-gradient-to-br from-slate-900 to-slate-700 rounded-xl flex items-center justify-center shrink-0 shadow-lg">
-                <Download className="w-[24px] h-[24px] text-white" />
+            <div className="glass-strong text-stone-900 shadow-2xl rounded-2xl border border-stone-200/60 p-[20px] max-w-md w-full flex items-start gap-[16px]">
+              <div className="w-[48px] h-[48px] bg-stone-900 rounded-xl flex items-center justify-center shrink-0">
+                <Download className="w-[24px] h-[24px] text-stone-50" strokeWidth={2} />
               </div>
               <div className="flex-1">
-                <h4 className="text-[16px] font-bold leading-tight">Instal VAN-X 313 . ALL IN</h4>
-                <p className="text-[13px] text-slate-600 mt-[4px]">Tambahkan ke Layar Utama untuk akses lebih cepat.</p>
+                <h4 className="text-[16px] font-semibold leading-tight">Instal VAN-X 313 . ALL IN</h4>
+                <p className="text-[13px] text-stone-600 mt-[4px]">Tambahkan ke Layar Utama untuk akses lebih cepat.</p>
                 <div className="flex items-center gap-[10px] mt-[16px]">
                   <button 
                     onClick={handleInstallClick}
-                    className="bg-gradient-to-r from-slate-900 to-slate-700 text-white text-[13px] font-semibold px-[20px] py-[8px] rounded-lg hover:from-slate-800 hover:to-slate-600 transition-all shadow-lg"
+                    className="bg-stone-900 text-stone-50 text-[13px] font-medium px-[20px] py-[8px] rounded-lg hover:bg-stone-800 transition-all"
                   >
                     Instal Aplikasi
                   </button>
                   <button 
                     onClick={() => setShowInstallPopup(false)}
-                    className="bg-transparent text-slate-600 text-[13px] font-medium px-[20px] py-[8px] rounded-lg border-2 border-slate-200 hover:bg-slate-50 hover:border-slate-300 transition-all"
+                    className="bg-transparent text-stone-600 text-[13px] font-medium px-[20px] py-[8px] rounded-lg border border-stone-200/60 hover:glass-card hover:border-stone-300 transition-all"
                   >
                     Nanti
                   </button>

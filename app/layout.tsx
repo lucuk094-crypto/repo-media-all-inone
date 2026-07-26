@@ -1,11 +1,11 @@
 import type {Metadata, Viewport} from 'next';
-import { Space_Grotesk } from 'next/font/google';
+import { Inter } from 'next/font/google';
 import './globals.css';
 
-const spaceGrotesk = Space_Grotesk({ 
+const inter = Inter({ 
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700'],
-  variable: '--font-space-grotesk'
+  variable: '--font-inter'
 });
 
 export const metadata: Metadata = {
@@ -20,13 +20,13 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#0F172A',
+  themeColor: '#FAFAF9',
 };
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
     <html lang="id">
-      <body className={`${spaceGrotesk.variable} font-sans bg-[#F8FAFC] text-[#0F172A] min-h-screen antialiased`} suppressHydrationWarning>{children}</body>
+      <body className={`${inter.variable} font-sans bg-stone-50 text-stone-900 min-h-screen antialiased`} suppressHydrationWarning>{children}</body>
     </html>
   );
 }
