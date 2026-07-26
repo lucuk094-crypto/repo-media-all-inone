@@ -136,7 +136,7 @@ export default function Home() {
             <div className="w-[44px] h-[44px] bg-stone-900 rounded-xl flex items-center justify-center">
               <Download className="w-[22px] h-[22px] text-stone-50" strokeWidth={2} />
             </div>
-            <span className="text-stone-900 font-semibold text-[19px] tracking-tight">
+            <span className="text-stone-900 font-raleway font-black text-[20px] tracking-tight uppercase">
               VAN-X 313
             </span>
           </div>
@@ -170,7 +170,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
-            className="text-[42px] md:text-[64px] font-semibold leading-[1.1] text-stone-900 mb-[20px] max-w-4xl tracking-tight"
+            className="text-[42px] md:text-[72px] font-raleway font-black leading-[1.05] text-stone-900 mb-[20px] max-w-4xl tracking-tight uppercase"
           >
             Pengunduh Media<br/>Universal
           </motion.h1>
