@@ -1,17 +1,11 @@
 import type {Metadata, Viewport} from 'next';
-import { Inter, Raleway } from 'next/font/google';
+import { Inter } from 'next/font/google';
 import './globals.css';
 
 const inter = Inter({ 
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700'],
   variable: '--font-inter'
-});
-
-const raleway = Raleway({
-  subsets: ['latin'],
-  weight: ['700', '800', '900'],
-  variable: '--font-raleway'
 });
 
 export const metadata: Metadata = {
@@ -26,13 +20,13 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#F5F1E8',
+  themeColor: '#0A0A0A',
 };
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
     <html lang="id">
-      <body className={`${inter.variable} ${raleway.variable} font-sans bg-[#F5F1E8] dark:bg-[#2C1810] text-[#2C1810] dark:text-[#F5F1E8] min-h-screen antialiased`} suppressHydrationWarning>{children}</body>
+      <body className={`${inter.variable} font-sans bg-[#0A0A0A] text-[#E5E5E5] min-h-screen antialiased`} suppressHydrationWarning>{children}</body>
     </html>
   );
 }
