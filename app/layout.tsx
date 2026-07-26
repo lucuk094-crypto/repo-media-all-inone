@@ -26,13 +26,13 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#FAFAF9',
+  themeColor: '#F5F1E8',
 };
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
     <html lang="id">
-      <body className={`${inter.variable} ${raleway.variable} font-sans bg-stone-50 text-stone-900 min-h-screen antialiased`} suppressHydrationWarning>{children}</body>
+      <body className={`${inter.variable} ${raleway.variable} font-sans bg-[#F5F1E8] dark:bg-[#2C1810] text-[#2C1810] dark:text-[#F5F1E8] min-h-screen antialiased`} suppressHydrationWarning>{children}</body>
     </html>
   );
 }
